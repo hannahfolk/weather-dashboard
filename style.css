@@ -1,0 +1,93 @@
+body {
+    padding: 0;
+}
+
+header {
+    color: white;
+    background-color: #343a40;
+    display: block;
+    width: 100%;
+    font-size: 50px;
+    text-align: center;
+    padding: 10px;
+}
+
+.sidenav {
+    background-color: #f8f9fa;
+    padding: 20px;
+}
+
+h5 {
+    font-size: 25px;
+}
+
+#searchBar {
+    padding-right: 0;
+}
+
+#searchBtn {
+    padding-left: 0;
+}
+
+#cities {
+    margin-top: 20px;
+}
+
+.navCity {
+    background-color: none;
+    color: #495057;
+}
+
+.city {
+    padding: 5px;
+}
+
+.navCity:hover {
+    text-decoration: none;
+}
+
+.navCity:focus {
+    text-decoration: none;
+}
+
+#cityName {
+    margin-bottom: 20px;
+}
+
+#uv-index {
+    color: white;
+    background-color: #dc3644;
+    padding: 5px 10px;
+    border-radius: 0.25rem;
+    font-size: 16px;
+}
+
+#cityInfo, #five-day-forecast {
+    margin: 10px;
+}
+
+#five-day-forecast {
+    border: none;
+}
+
+.forecast {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border-radius: 0.25rem;
+    margin: 0;
+}
+
+@media (max-width: 1288px) {
+    .forecasted-day {
+        max-width: 185px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 375px) {
+    .forecasted-day {
+        max-width: 500px;
+        padding: 5px;
+    }
+}
