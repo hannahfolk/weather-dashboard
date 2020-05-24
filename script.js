@@ -4,12 +4,6 @@ $(document).ready(function() {
     var currentDate = moment().format("MM/DD/YYYY");
     var currentHour = moment().format("HH");
 
-    // Make arrays of dates, icons, temps, and humidity forecast
-    var forecastedDays = [];
-    var forecastedIcons = [];
-    var forecastedTemps = [];
-    var forecastedHums = [];
-
     // Make an array of cities to go in local storage
     var cities = [];
 
@@ -58,7 +52,7 @@ $(document).ready(function() {
         }).then(function(response) {
             var temp = response.main.temp;
             var iconCode = response.weather[0].icon;
-            var iconURL = "http://openweathermap.org/img/wn/" + iconCode + ".png";
+            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
             var imgIcon = $("<img>");
             imgIcon.attr("src", iconURL);
             $("#infoHeader").append(imgIcon);
@@ -87,91 +81,72 @@ $(document).ready(function() {
             url: fiveDayURL,
             method: "GET"
         }).then(function(fiveDayData) {
+            var fiveDayList = fiveDayData.list;
+            var currentTimeBlock = "00:00:00";
 
-            // Store the data into their respective arrays, since the response given lists 40 groups,
-                // and I want every 8th index in the list
-            forecastedTemps = [];
-            forecastedHums = [];
-            forecastedIcons = [];
-            var j = 0;
-            for (var i = 0; i < 5; i++) {
-                if (currentHour >= 9 && currentHour < 12) {
-                    forecastedTemps.push(fiveDayData.list[j].main.temp);
-                    forecastedHums.push(fiveDayData.list[j].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j].weather[0].icon);
-                } else if (currentHour >= 12 && currentHour < 15) {
-                    forecastedTemps.push(fiveDayData.list[j + 1].main.temp);
-                    forecastedHums.push(fiveDayData.list[j + 1].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j + 1].weather[0].icon);
-                } else if (currentHour >= 15 && currentHour < 18) {
-                    forecastedTemps.push(fiveDayData.list[j + 2].main.temp);
-                    forecastedHums.push(fiveDayData.list[j + 2].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j + 2].weather[0].icon);
-                } else if (currentHour >= 18 && currentHour < 21) {
-                    forecastedTemps.push(fiveDayData.list[j + 3].main.temp);
-                    forecastedHums.push(fiveDayData.list[j + 3].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j + 3].weather[0].icon);
-                } else if (currentHour >= 21 && currentHour < 24) {
-                    forecastedTemps.push(fiveDayData.list[j + 4].main.temp);
-                    forecastedHums.push(fiveDayData.list[j + 4].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j + 4].weather[0].icon);
-                } else if (currentHour >= 0 && currentHour < 3) {
-                    forecastedTemps.push(fiveDayData.list[j + 5].main.temp);
-                    forecastedHums.push(fiveDayData.list[j + 5].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j + 5].weather[0].icon);
-                } else if (currentHour >= 3 && currentHour < 6) {
-                    forecastedTemps.push(fiveDayData.list[j + 6].main.temp);
-                    forecastedHums.push(fiveDayData.list[j + 6].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j + 6].weather[0].icon);
-                } else if (currentHour >= 6 && currentHour < 9) {
-                    forecastedTemps.push(fiveDayData.list[j + 7].main.temp);
-                    forecastedHums.push(fiveDayData.list[j + 7].main.humidity);
-                    forecastedIcons.push(fiveDayData.list[j + 7].weather[0].icon);
-                }
-                j += 8;
+            // Change the current time block of three hours based on currentHour
+            if (currentHour >= 0 && currentHour < 3) {
+                currentTimeBlock = "00:00:00";
+            } else if (currentHour >= 3 && currentHour < 6) {
+                currentTimeBlock = "03:00:00";
+            } else if (currentHour >= 6 && currentHour < 9) {
+                currentTimeBlock = "06:00:00";
+            } else if (currentHour >= 9 && currentHour < 12) {
+                currentTimeBlock = "09:00:00";
+            } else if (currentHour >= 12 && currentHour < 15) {
+                currentTimeBlock = "12:00:00";
+            } else if (currentHour >= 15 && currentHour < 18) {
+                currentTimeBlock = "15:00:00";
+            } else if (currentHour >= 18 && currentHour < 21) {
+                currentTimeBlock = "18:00:00";
+            } else if (currentHour >= 21 && currentHour < 24) {
+                currentTimeBlock = "21:00:00";
             };
             
             // Append the forecasted information to the 5-day forecast area on the HTML
-            for (var i = 0; i < 5; i++) {
-                // Create the necessary elements
-                var divCol = $("<div>");
-                var divCard = $("<div>");
-                var divCardBody = $("<div>");
-                var h5El = $("<h5>");
-                var fiveDayImgIcon = $("<img>");
-                var pTemp = $("<p>");
-                var pHumidity = $("<p>");
-                var fiveDayIconURL = "http://openweathermap.org/img/wn/" + forecastedIcons[i] + ".png";
+            for (var i = 0; i < fiveDayList.length; i++) {
+                if (fiveDayList[i].dt_txt.includes(currentTimeBlock)) {
+                    // Create the necessary elements
+                    var divCol = $("<div>");
+                    var divCard = $("<div>");
+                    var divCardBody = $("<div>");
+                    var h5El = $("<h5>");
+                    var fiveDayImgIcon = $("<img>");
+                    var pTemp = $("<p>");
+                    var pHumidity = $("<p>");
+                    var fiveDayDate = moment(fiveDayList[i].dt_txt).format("MM/DD/YYYY");
+                    var fiveDayIconURL = "http://openweathermap.org/img/w/" + fiveDayList[i].weather[0].icon + ".png";
 
-                // Set attributes for the newly created elements
-                divCol.attr("class", "col forecasted-day");
-                divCol.attr("id", "day-" + (i + 2));
-                divCard.attr("class", "card");
-                divCardBody.attr("class", "card-body forecast");
-                h5El.attr("class", "card-title");
-                h5El.attr("id", "date-" + (i + 2));
-                pTemp.attr("class", "lead");
-                pHumidity.attr("class", "lead");
+                    // Set attributes for the newly created elements
+                    divCol.attr("class", "col forecasted-day");
+                    divCol.attr("id", "day-" + (i + 2));
+                    divCard.attr("class", "card");
+                    divCardBody.attr("class", "card-body forecast");
+                    h5El.attr("class", "card-title");
+                    h5El.attr("id", "date-" + (i + 2));
+                    pTemp.attr("class", "lead");
+                    pHumidity.attr("class", "lead");
 
-                // Set the text content of the elements using the arrays that hold the data
-                // For the dates
-                h5El.text(forecastedDays[i]);
-                // For the temps
-                pTemp.text("Temp: " + forecastedTemps[i] + " \xB0F");
-                // For the humidity
-                pHumidity.text("Humidity: " + forecastedHums[i] + "%");
+                    // Set the text content of the elements using the arrays that hold the data
+                    // For the dates
+                    h5El.text(fiveDayDate);
+                    // For the temps
+                    pTemp.text("Temp: " + fiveDayList[i].temp + " \xB0F");
+                    // For the humidity
+                    pHumidity.text("Humidity: " + fiveDayList[i].main.humidity + "%");
 
-                // Set the img src
-                fiveDayImgIcon.attr("src", fiveDayIconURL);
+                    // Set the img src
+                    fiveDayImgIcon.attr("src", fiveDayIconURL);
 
-                // Append elements to the five day forecast divs
-                $("#five-day-forecast-row").append(divCol);
-                divCol.append(divCard);
-                divCard.append(divCardBody);
-                divCardBody.append(h5El);
-                divCardBody.append(fiveDayImgIcon);
-                divCardBody.append(pTemp);
-                divCardBody.append(pHumidity);
+                    // Append elements to the five day forecast divs
+                    $("#five-day-forecast-row").append(divCol);
+                    divCol.append(divCard);
+                    divCard.append(divCardBody);
+                    divCardBody.append(h5El);
+                    divCardBody.append(fiveDayImgIcon);
+                    divCardBody.append(pTemp);
+                    divCardBody.append(pHumidity);
+                };
             };
         });
 
@@ -193,12 +168,6 @@ $(document).ready(function() {
         var h3El = $("<h3>");
         h3El.text("5-Day Forecast");
         $("#five-day-forecast").prepend(h3El);
-
-        // Set dates of the forecasted days and put them into an array
-        for (var i = 0; i < 5; i++) {
-            var changedDate = moment().add(i + 1, "d").format("MM/DD/YYYY");
-            forecastedDays.push(changedDate);
-        };
 
         // Reset the value of the input form to empty for good user experience
         $("#search").val("");
