@@ -52,7 +52,7 @@ $(document).ready(function() {
         }).then(function(response) {
             var temp = response.main.temp;
             var iconCode = response.weather[0].icon;
-            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+            var iconURL = "https://openweathermap.org/img/w/" + iconCode + ".png";
             var imgIcon = $("<img>");
             imgIcon.attr("src", iconURL);
             $("#infoHeader").append(imgIcon);
