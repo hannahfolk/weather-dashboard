@@ -115,7 +115,7 @@ $(document).ready(function() {
                     var pTemp = $("<p>");
                     var pHumidity = $("<p>");
                     var fiveDayDate = moment(fiveDayList[i].dt_txt).format("MM/DD/YYYY");
-                    var fiveDayIconURL = "http://openweathermap.org/img/w/" + fiveDayList[i].weather[0].icon + ".png";
+                    var fiveDayIconURL = "https://openweathermap.org/img/w/" + fiveDayList[i].weather[0].icon + ".png";
 
                     // Set attributes for the newly created elements
                     divCol.attr("class", "col forecasted-day");
