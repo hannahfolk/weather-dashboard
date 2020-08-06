@@ -81,6 +81,7 @@ $(document).ready(function() {
             url: fiveDayURL,
             method: "GET"
         }).then(function(fiveDayData) {
+          console.log(fiveDayData);
             var fiveDayList = fiveDayData.list;
             var currentTimeBlock = "00:00:00";
 
@@ -131,7 +132,7 @@ $(document).ready(function() {
                     // For the dates
                     h5El.text(fiveDayDate);
                     // For the temps
-                    pTemp.text("Temp: " + fiveDayList[i].temp + " \xB0F");
+                    pTemp.text("Temp: " + fiveDayList[i].main.temp + " \xB0F");
                     // For the humidity
                     pHumidity.text("Humidity: " + fiveDayList[i].main.humidity + "%");
 
