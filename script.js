@@ -81,7 +81,6 @@ $(document).ready(function() {
             url: fiveDayURL,
             method: "GET"
         }).then(function(fiveDayData) {
-          console.log(fiveDayData);
             var fiveDayList = fiveDayData.list;
             var currentTimeBlock = "00:00:00";
 
