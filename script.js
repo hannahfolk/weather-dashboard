@@ -61,7 +61,7 @@ $(document).ready(function() {
             $("#wind-speed").text("Wind Speed: " + response.wind.speed + " MPH");
             
             // uvURL is the url for UV index
-            var uvURL = "https://api.openweathermap.org/data/2.5/uvi?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&apikey=572d14321ae6789e9c768be6fb36520d";
+            var uvURL = "https://api.openweathermap.org/data/2.5/onecall?lat=" + response.coord.lat + "&lon=" + response.coord.lon + "&apikey=572d14321ae6789e9c768be6fb36520d";
 
             // AJAX call for UV index
             $.ajax({
@@ -71,7 +71,7 @@ $(document).ready(function() {
                 $("#uv-index-label").text("UV Index: ");
                 var uvIndexEl = $("<span>");
                 uvIndexEl.attr("id", "uv-index");
-                uvIndexEl.text(uvData.value);
+                uvIndexEl.text(uvData.current.uvi);
                 $("#uv-index-label").append(uvIndexEl);
             });
         });
